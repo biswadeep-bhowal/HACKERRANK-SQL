@@ -1,0 +1,107 @@
+1)  Query all coolumns for all American Cities where population is greater than 100000. 
+
+A)  SELECT * FROM CITY WHERE COUNTRYCODE = "USA" AND POPULATION > 100000;
+
+2)  Query the NAME field for all American cities in the CITY table with populations larger than 120000. The CountryCode for America is USA.
+
+A)  SELECT NAME FROM CITY WHERE COUNTRYCODE = "USA" AND POPULATION > 120000;
+
+3)  Query all columns (attributes) for every row in the CITY table.
+
+A)  SELECT * FROM CITY;
+
+4)  Query all columns for a city in CITY with the ID 1661.
+
+A)  SELECT * FROM CITY WHERE ID = 1661;
+
+5)  Query all attributes of every Japanese city in the CITY table. The COUNTRYCODE for Japan is JPN.
+
+A)  SELECT * FROM CITY WHERE COUNTRYCODE = 'JPN';
+
+6)  Query the names of all the Japanese cities in the CITY table. The COUNTRYCODE for Japan is JPN.
+
+A)  SELECT NAME FROM CITY WHERE COUNTRYCODE = 'JPN';
+
+7)  Query a list of CITY and STATE from the STATION table.
+
+A)  SELECT CITY, STATE FROM STATION;
+
+8)  Query a list of CITY names from STATION for cities that have an even ID number. Print the results in any order, but exclude duplicates from the answer.
+
+A)  SELECT DISTINCT CITY FROM STATION WHERE MOD( ID, 2 ) = 0;
+
+9)  Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
+
+A)  SELECT COUNT( CITY ) - COUNT( DISTINCT CITY ) FROM STATION;
+
+10) Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. Your result cannot contain duplicates.
+
+A)  SELECT CITY FROM STATION WHERE 
+        UPPER( CITY ) LIKE 'A%' OR
+        UPPER( CITY ) LIKE 'E%' OR
+        UPPER( CITY ) LIKE 'I%' OR
+        UPPER( CITY ) LIKE 'O%' OR
+        UPPER( CITY ) LIKE 'U%';
+
+11) Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
+
+A)  SELECT DISTINCT CITY FROM STATION WHERE 
+        UPPER( CITY ) LIKE '%A' OR
+        UPPER( CITY ) LIKE '%E' OR
+        UPPER( CITY ) LIKE '%I' OR
+        UPPER( CITY ) LIKE '%O' OR
+        UPPER( CITY ) LIKE '%U';
+
+12) Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.
+
+A)  SELECT DISTINCT CITY FROM STATION 
+    WHERE 
+    (
+        UPPER( CITY ) LIKE 'A%' OR
+        UPPER( CITY ) LIKE 'E%' OR
+        UPPER( CITY ) LIKE 'I%' OR
+        UPPER( CITY ) LIKE 'O%' OR
+        UPPER( CITY ) LIKE 'U%'
+    )
+    AND
+    (
+        UPPER( CITY ) LIKE '%A' OR
+        UPPER( CITY ) LIKE '%E' OR
+        UPPER( CITY ) LIKE '%I' OR
+        UPPER( CITY ) LIKE '%O' OR
+        UPPER( CITY ) LIKE '%U'
+    );
+
+13) Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates.
+
+A)  SELECT DISTINCT CITY FROM STATION 
+    WHERE 
+    (
+        UPPER( CITY ) NOT LIKE 'A%' AND
+        UPPER( CITY ) NOT LIKE 'E%' AND
+        UPPER( CITY ) NOT LIKE 'I%' AND
+        UPPER( CITY ) NOT LIKE 'O%' AND
+        UPPER( CITY ) NOT LIKE 'U%'
+    );
+
+14) Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
+
+A)  SELECT DISTINCT CITY FROM STATION 
+    WHERE 
+    (
+        UPPER( CITY ) NOT LIKE '%A' AND
+        UPPER( CITY ) NOT LIKE '%E' AND
+        UPPER( CITY ) NOT LIKE '%I' AND
+        UPPER( CITY ) NOT LIKE '%O' AND
+        UPPER( CITY ) NOT LIKE '%U'
+    );
+
+15) Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates.
+
+A)  -- The Question is phrased incorrectly. It should be neither-nor instead of either-or!
+    SELECT DISTINCT CITY FROM STATION WHERE NOT(
+        SUBSTR( CITY, 0, 1 ) IN ( 'A', 'E', 'I', 'O', 'U' )
+        AND
+        SUBSTR( CITY, -1, 1 ) IN ( 'a', 'e', 'i', 'o', 'u' )
+    );
+
