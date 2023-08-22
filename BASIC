@@ -105,3 +105,86 @@ A)  -- The Question is phrased incorrectly. It should be neither-nor instead of 
         SUBSTR( CITY, -1, 1 ) IN ( 'a', 'e', 'i', 'o', 'u' )
     );
 
+16) Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. Your result cannot contain duplicates.
+
+A)  SELECT DISTINCT CITY FROM STATION WHERE
+        SUBSTR( CITY, 0, 1 ) NOT IN ( 'A', 'E', 'I', 'O', 'U' )
+        AND
+        SUBSTR( CITY, -1, 1 ) NOT IN ( 'a', 'e', 'i', 'o', 'u' );
+
+17) Query the Name of any student in STUDENTS who scored higher than 75 Marks. Order your output by the last three characters of each name. If two or more students both have names ending in the same last three characters (i.e.: Bobby, Robby, etc.), secondary sort them by ascending ID.
+
+A)  SELECT NAME FROM STUDENTS WHERE MARKS > 75 ORDER BY SUBSTR( NAME, -3, 3 ), ID;
+
+18) Write a query that prints a list of employee names (i.e.: the name attribute) from the Employee table in alphabetical order.
+
+A)  SELECT NAME FROM EMPLOYEE ORDER BY NAME;
+
+19) Write a query that prints a list of employee names (i.e.: the name attribute) for employees in Employee having a salary greater than 2000 per month who have been employees for less than 10 months. Sort your result by ascending employee_id.
+
+A) SELECT NAME FROM EMPLOYEE 
+        WHERE SALARY > 2000 AND MONTHS < 10
+        ORDER BY EMPLOYEE_ID;
+
+20) Write a query identifying the type of each record in the TRIANGLES table using its three side lengths.
+
+A)  SELECT
+        CASE
+            WHEN A + B <= C OR B + C <= A OR A + C <= B
+                THEN 'Not A Triangle'
+            WHEN A = B and B = C 
+                THEN 'Equilateral'
+            WHEN A = B OR B = C OR C = A 
+                THEN 'Isosceles'
+            ELSE 
+                'Scalene'
+        END
+    FROM TRIANGLES;
+
+21) Query the total population of all cities in CITY where District is California.
+
+A) SELECT SUM( POPULATION ) FROM CITY WHERE DISTRICT = 'California';
+
+22) Query the average population of all cities in CITY where District is California.
+
+A)  SELECT AVG( POPULATION ) FROM CITY WHERE DISTRICT = 'California';
+
+23) Query the average population for all cities in CITY, rounded down to the nearest integer.
+
+A)  SELECT FLOOR( AVG( POPULATION ) ) FROM CITY;
+
+24) Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+
+A)  SELECT SUM( POPULATION ) FROM CITY WHERE COUNTRYCODE = 'JPN';
+
+25) Query the difference between the maximum and minimum populations in CITY.
+
+A)  SELECT MAX( POPULATION ) - MIN( POPULATION ) FROM CITY;
+
+26) Samantha was tasked with calculating the average monthly salaries for all employees in the EMPLOYEES table, but did not realize her keyboard's 0 key was broken until after completing the calculation. She wants your help finding the difference between her miscalculation (using salaries with any zeros removed), and the actual average salary.
+    Write a query calculating the amount of error (i.e.:  actual - miscalculated average monthly salaries), and round it up to the next integer.
+
+A)  SELECT CEIL( AVG( SALARY ) - AVG( REPLACE( SALARY, 0, '' ) ) ) FROM EMPLOYEES;
+
+27) We define an employee's total earnings to be their monthly salary * months worked, and the maximum total earnings to be the maximum total earnings for any employee in the Employee table. Write a query to find the maximum total earnings for all employees as well as the total number of employees who have maximum total earnings. Then print these values as 2 space-separated integers.
+
+A)  SELECT MAX( MONTHS*SALARY ) || ' ' || COUNT( * ) FROM EMPLOYEE 
+        WHERE MONTHS*SALARY IN ( SELECT MAX( MONTHS*SALARY ) FROM EMPLOYEE );
+
+28) Query the following two values from the STATION table:
+
+    The sum of all values in LAT_N rounded to a scale of 2 decimal places.
+    The sum of all values in LONG_W rounded to a scale of 2 decimal places.
+
+    Your results must be in the form: lat lon
+
+A)  SELECT ROUND( SUM( LAT_N), 2 ) || ' ' || ROUND( SUM( LONG_W ), 2 ) FROM STATION; 
+
+29) Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.7880 and less than 137.2345. Truncate your answer to 4 decimal places.
+
+A)  SELECT TRUNC( SUM( LAT_N ), 4 ) FROM STATION 
+        WHERE 38.7880 < LAT_N AND LAT_N < 137.2345;
+
+30) Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. Truncate your answer to 4 decimal places.
+
+A)  SELECT TRUNC( MAX( LAT_N ), 4) FROM STATION WHERE LAT_N < 137.2345;
