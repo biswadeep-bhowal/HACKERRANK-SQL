@@ -188,3 +188,49 @@ A)  SELECT TRUNC( SUM( LAT_N ), 4 ) FROM STATION
 30) Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. Truncate your answer to 4 decimal places.
 
 A)  SELECT TRUNC( MAX( LAT_N ), 4) FROM STATION WHERE LAT_N < 137.2345;
+
+31) Query the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) in STATION that is less than 137.2345. Round your answer to 4 decimal places.
+
+A)  SELECT ROUND( MAX( LONG_W ), 4 ) FROM STATION WHERE LAT_N IN 
+        ( SELECT MAX( LAT_N ) FROM STATION WHERE LAT_N < 137.2345 );
+
+32) Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 38.7780. Round your answer to 4 decimal places.
+
+A)  SELECT ROUND( MIN( LAT_N ), 4 ) FROM STATION WHERE LAT_N > 38.7780;
+
+33) Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to 4 decimal places.
+
+A)  SELECT ROUND( LONG_W, 4 ) FROM STATION WHERE LAT_N IN
+        ( SELECT MIN( LAT_N ) FROM STATION WHERE LAT_N > 38.7780 );
+
+34) Consider  P1( A, B ) and P2( C, D ) to be two points on a 2D plane.
+
+    A happens to equal the minimum value in Northern Latitude (LAT_N in STATION)
+    B happens to equal the minimum value in Western Longitude (LONG_W in STATION)
+    C happens to equal the maximum value in Northern Latitude (LAT_N in STATION)
+    D happens to equal the maximum value in Western Longitude (LONG_W in STATION)
+
+    Query the Manhattan Distance between points P1 and P2 and round it to a scale of 4 decimal places.
+
+A)  SELECT ROUND( MAX( LAT_N ) - MIN( LAT_N ) + MAX( LONG_W ) - MIN( LONG_W ), 4 ) FROM STATION;
+
+35) Consider P1( A, C ) and P2( B, D ) to be two points on a 2D plane where A,B are the respective minimum and maximum values of Northern Latitude (LAT_N) and ( C, D ) are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION.
+    Query the Euclidean Distance between points P1 and P2 and format your answer to display 4 decimal digits.
+
+A)  SELECT 
+        ROUND( SQRT( POWER( MAX( LAT_N ) - MIN( LAT_N ), 2 ) + POWER( MAX( LONG_W ) - MIN( LONG_W ), 2 ) ), 4 )
+    FROM STATION;
+
+36) The OCCUPATIONS Table has 2 columns - Name and Occupation.
+
+    Firstly, Query each record along with the Profession like so - Ashley(P)
+    Here, P is the first character of Professor, her profession.
+
+    Secondly, Display the number of people in each type of profession like so - There are a total of 2 doctors.
+    Sort by the count, followed by the Occupation alphabetically.
+
+A)  SELECT NAME || '(' || SUBSTR( OCCUPATION, 0, 1 ) || ')' FROM OCCUPATIONS ORDER BY NAME;
+
+    SELECT 'There are a total of ' || COUNT( OCCUPATION ) || ' ' || LOWER( OCCUPATION ) || 's.' FROM OCCUPATIONS 
+    GROUP BY OCCUPATION 
+    ORDER BY COUNT( OCCUPATION ), OCCUPATION;
