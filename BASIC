@@ -1,4 +1,4 @@
-1)  Query all coolumns for all American Cities where population is greater than 100000. 
+1)  Query all columns for all American Cities where population is greater than 100000. 
 
 A)  SELECT * FROM CITY WHERE COUNTRYCODE = "USA" AND POPULATION > 100000;
 
@@ -43,6 +43,10 @@ A)  SELECT CITY FROM STATION WHERE
         UPPER( CITY ) LIKE 'O%' OR
         UPPER( CITY ) LIKE 'U%';
 
+    --OR
+
+    SELECT DISTINCT CITY FROM STATION WHERE UPPER( SUBSTR( CITY, 0, 1 ) ) IN ( 'A', 'E', 'I', 'O', 'U' );
+
 11) Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
 
 A)  SELECT DISTINCT CITY FROM STATION WHERE 
@@ -51,6 +55,10 @@ A)  SELECT DISTINCT CITY FROM STATION WHERE
         UPPER( CITY ) LIKE '%I' OR
         UPPER( CITY ) LIKE '%O' OR
         UPPER( CITY ) LIKE '%U';
+
+    --OR
+
+    SELECT DISTINCT CITY FROM STATION WHERE UPPER( SUBSTR( CITY, -1, 1 ) ) IN ( 'A', 'E', 'I', 'O', 'U' );
 
 12) Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.
 
@@ -72,6 +80,13 @@ A)  SELECT DISTINCT CITY FROM STATION
         UPPER( CITY ) LIKE '%U'
     );
 
+    --OR
+
+    SELECT DISTINCT CITY FROM STATION WHERE 
+        UPPER( SUBSTR( CITY, 0, 1 ) ) IN ( 'A', 'E', 'I', 'O', 'U' )
+        AND
+        UPPER( SUBSTR( CITY, -1, 1 ) ) IN ( 'A', 'E', 'I', 'O', 'U' );
+
 13) Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates.
 
 A)  SELECT DISTINCT CITY FROM STATION 
@@ -84,6 +99,10 @@ A)  SELECT DISTINCT CITY FROM STATION
         UPPER( CITY ) NOT LIKE 'U%'
     );
 
+    --OR
+
+    SELECT DISTINCT CITY FROM STATION WHERE UPPER( SUBSTR( CITY, 0, 1 ) ) NOT IN ( 'A', 'E', 'I', 'O', 'U' );
+
 14) Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
 
 A)  SELECT DISTINCT CITY FROM STATION 
@@ -95,6 +114,10 @@ A)  SELECT DISTINCT CITY FROM STATION
         UPPER( CITY ) NOT LIKE '%O' AND
         UPPER( CITY ) NOT LIKE '%U'
     );
+    
+    --OR
+
+    SELECT DISTINCT CITY FROM STATION WHERE UPPER( SUBSTR( CITY, -1, 1 ) ) NOT IN ( 'A', 'E', 'I', 'O', 'U' );
 
 15) Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates.
 
@@ -116,11 +139,11 @@ A)  SELECT DISTINCT CITY FROM STATION WHERE
 
 A)  SELECT NAME FROM STUDENTS WHERE MARKS > 75 ORDER BY SUBSTR( NAME, -3, 3 ), ID;
 
-18) Write a query that prints a list of employee names (i.e.: the name attribute) from the Employee table in alphabetical order.
+18) Write a query that prints a list of employee names (i.e., the name attribute) from the Employee table in alphabetical order.
 
 A)  SELECT NAME FROM EMPLOYEE ORDER BY NAME;
 
-19) Write a query that prints a list of employee names (i.e.: the name attribute) for employees in Employee having a salary greater than 2000 per month who have been employees for less than 10 months. Sort your result by ascending employee_id.
+19) Write a query that prints a list of employee names (i.e., the name attribute) for employees in Employee having a salary greater than 2000 per month who have been employees for less than 10 months. Sort your result by ascending employee_id.
 
 A) SELECT NAME FROM EMPLOYEE 
         WHERE SALARY > 2000 AND MONTHS < 10
@@ -169,7 +192,9 @@ A)  SELECT CEIL( AVG( SALARY ) - AVG( REPLACE( SALARY, 0, '' ) ) ) FROM EMPLOYEE
 27) We define an employee's total earnings to be their monthly salary * months worked, and the maximum total earnings to be the maximum total earnings for any employee in the Employee table. Write a query to find the maximum total earnings for all employees as well as the total number of employees who have maximum total earnings. Then print these values as 2 space-separated integers.
 
 A)  SELECT MAX( MONTHS*SALARY ) || ' ' || COUNT( * ) FROM EMPLOYEE 
-        WHERE MONTHS*SALARY IN ( SELECT MAX( MONTHS*SALARY ) FROM EMPLOYEE );
+    WHERE MONTHS*SALARY IN ( 
+        SELECT MAX( MONTHS*SALARY ) FROM EMPLOYEE 
+    );
 
 28) Query the following two values from the STATION table:
 
@@ -178,12 +203,15 @@ A)  SELECT MAX( MONTHS*SALARY ) || ' ' || COUNT( * ) FROM EMPLOYEE
 
     Your results must be in the form: lat lon
 
-A)  SELECT ROUND( SUM( LAT_N), 2 ) || ' ' || ROUND( SUM( LONG_W ), 2 ) FROM STATION; 
+A)  SELECT ROUND( SUM( LAT_N ), 2 ) || ' ' || ROUND( SUM( LONG_W ), 2 ) FROM STATION; 
 
 29) Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.7880 and less than 137.2345. Truncate your answer to 4 decimal places.
 
-A)  SELECT TRUNC( SUM( LAT_N ), 4 ) FROM STATION 
-        WHERE 38.7880 < LAT_N AND LAT_N < 137.2345;
+A)  SELECT TRUNC( SUM( LAT_N ), 4 ) FROM STATION WHERE 38.7880 < LAT_N AND LAT_N < 137.2345;
+
+    --OR
+
+    SELECT TRUNC( SUM( LAT_N ), 4 ) FROM STATION WHERE LAT_N BETWEEN 38.7880 AND 137.2345;
 
 30) Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. Truncate your answer to 4 decimal places.
 
@@ -191,8 +219,10 @@ A)  SELECT TRUNC( MAX( LAT_N ), 4) FROM STATION WHERE LAT_N < 137.2345;
 
 31) Query the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) in STATION that is less than 137.2345. Round your answer to 4 decimal places.
 
-A)  SELECT ROUND( MAX( LONG_W ), 4 ) FROM STATION WHERE LAT_N IN 
-        ( SELECT MAX( LAT_N ) FROM STATION WHERE LAT_N < 137.2345 );
+A)  SELECT ROUND( MAX( LONG_W ), 4 ) FROM STATION 
+    WHERE LAT_N IN ( 
+        SELECT MAX( LAT_N ) FROM STATION WHERE LAT_N < 137.2345 
+    );
 
 32) Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 38.7780. Round your answer to 4 decimal places.
 
@@ -217,9 +247,7 @@ A)  SELECT ROUND( MAX( LAT_N ) - MIN( LAT_N ) + MAX( LONG_W ) - MIN( LONG_W ), 4
 35) Consider P1( A, C ) and P2( B, D ) to be two points on a 2D plane where A,B are the respective minimum and maximum values of Northern Latitude (LAT_N) and ( C, D ) are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION.
     Query the Euclidean Distance between points P1 and P2 and format your answer to display 4 decimal digits.
 
-A)  SELECT 
-        ROUND( SQRT( POWER( MAX( LAT_N ) - MIN( LAT_N ), 2 ) + POWER( MAX( LONG_W ) - MIN( LONG_W ), 2 ) ), 4 )
-    FROM STATION;
+A)  SELECT ROUND( SQRT( POWER( MAX( LAT_N ) - MIN( LAT_N ), 2 ) + POWER( MAX( LONG_W ) - MIN( LONG_W ), 2 ) ), 4 ) FROM STATION;
 
 36) The OCCUPATIONS Table has 2 columns - Name and Occupation.
 
